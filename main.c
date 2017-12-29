@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include "polygon.h"
 
 /***************************************************/
 
@@ -19,6 +20,7 @@
 #define WRITE               1
 #define TRUE                1
 #define MSB_SHIFT           32
+#define READER_32           32
 
 /***************************************************/
 
@@ -28,6 +30,7 @@
 void do_parent(void);
 void do_writer(char*);
 void do_reader64(void);
+void do_reader32(void);
 void handle_readers_creation_and_output_redirection(void);
 void close_remaining_pipes(void);
 
@@ -39,6 +42,7 @@ void close_remaining_pipes(void);
 /**************************************************/
 int writer_pipe[2];
 int poly_p[2], r_64_p[2], r_32_p[2];
+
 
 /***************************************************/
 
@@ -80,17 +84,33 @@ void do_writer(char* out_file){
     close(STD_IN);
     dup(writer_pipe[READ]);
     close(writer_pipe[READ]);
-    char* argv[] = {"writer.exe", out_file, (char*) NULL};
-    execl("writer.exe", argv);
+    execl("writer.exe", "writer.exe", out_file, (char*) NULL);
     printf("error!!!! fail to exec");
     exit(1); //for exec failure
 }
 
 void do_parent(){
     handle_readers_creation_and_output_redirection();
-    
-    
 
+    int input_type, reader_to_call = r_64_p[WRITE];
+    long long unsigned polygon;
+
+    while (TRUE)
+    {
+        scanf("%d", &input_type);
+        if(input_type == READER_32){
+            reader_to_call = r_32_p[WRITE];
+        }
+
+        write(reader_to_call, &input_type, sizeof(input_type));
+        read(poly_p[READ], &polygon, sizeof(polygon));
+        analyze_and_exec(polygon);
+        if (is_end_of_input(polygon)) {
+            break;
+        }
+    }
+
+    free_list();
     close_remaining_pipes();
     dup(STD_ERR);   //return output to prompt
     printf("main_process pid=%d is going to exit\n", getpid());
