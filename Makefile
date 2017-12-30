@@ -17,7 +17,7 @@ endif
 PROG1 = polygon$(EXT)
 PROG2 = writer$(EXT)
 
-all: $(PROG1) $(PROG2) test
+all: $(PROG1) $(PROG2)
 
 $(POLIGON).o: polygon.c polygon.h
 	$(CC) $(CFLAGS) $(LDFLAGS)-c $(POLIGON).c
@@ -44,4 +44,4 @@ clean:
 
 test:
 	@echo "Executing . . ."
-	@./$(PROG1)
+	@./$(PROG1) < in.txt
