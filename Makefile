@@ -44,4 +44,4 @@ clean:
 
 test:
 	@echo "Executing . . ."
-	@./$(PROG1) < in3.txt
+	@./$(PROG1) < in.txt
