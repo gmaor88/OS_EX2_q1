@@ -24,7 +24,7 @@ $(POLIGON).o: polygon.c polygon.h
 	$(ECHO)
 
 $(EX).o: $(EX).c $(POLIGON).h
-	$(CC) $(CFLAGS) $(LDFLAGS)-c $(EX)
+	$(CC) $(CFLAGS) $(LDFLAGS)-c $(EX).c
 	$(ECHO)
 
 $(WRITER).o: $(WRITER).c
@@ -44,4 +44,4 @@ clean:
 
 test:
 	@echo "Executing . . ."
-	@./$(PROG1) < in.txt
+	@./$(PROG1)
