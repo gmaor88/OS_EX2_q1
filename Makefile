@@ -4,7 +4,7 @@ CFLAGS = -Wall
 LDFLAGS = -lm # not really needed for this exercise
 CC = gcc -std=c99
 ECHO = echo "going to compile for target $@"
-POLIGON = polygon
+POLYGON = polygon
 EX = ex2_q1
 WRITER = writer
 OS := $(shell uname)
@@ -17,13 +17,13 @@ endif
 PROG1 = polygon$(EXT)
 PROG2 = writer$(EXT)
 
-all: $(PROG1) $(PROG2)
+all: $(PROG1) $(PROG2) test
 
-$(POLIGON).o: polygon.c polygon.h
-	$(CC) $(CFLAGS) $(LDFLAGS)-c $(POLIGON).c
+$(POLYGON).o: polygon.c polygon.h
+	$(CC) $(CFLAGS) $(LDFLAGS)-c $(POLYGON).c
 	$(ECHO)
 
-$(EX).o: $(EX).c $(POLIGON).h
+$(EX).o: $(EX).c $(POLYGON).h
 	$(CC) $(CFLAGS) $(LDFLAGS)-c $(EX).c
 	$(ECHO)
 
@@ -34,14 +34,14 @@ $(PROG2): $(WRITER).o
 	@echo Linking writer. . . 
 	$(CC) -o $(WRITER) $(CFLAGS) $(WRITER).o
 
-$(PROG1): $(EX).o $(POLIGON).o 
+$(PROG1): $(EX).o $(POLYGON).o 
 	@echo Linking . . . 
-	$(CC) -o $(POLIGON) $(CFLAGS) $(POLIGON).o $(EX).o
+	$(CC) -o $(POLYGON) $(CFLAGS) $(POLYGON).o $(EX).o
 
 clean:
 
-	rm -vf *.o *.exe *.log out.txt
+	rm -vf *.o *.exe *.log out*.txt
 
 test:
 	@echo "Executing . . ."
-	@./$(PROG1) < in.txt
+	@./$(PROG1) < in3.txt

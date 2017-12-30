@@ -91,18 +91,13 @@ void do_writer(char* out_file){
 void do_parent(){
     handle_readers_creation_and_output_redirection();
 
-    int input_type, reader_to_call = r_64_p[WRITE];
     long long unsigned polygon;
 
     while (TRUE)
     {
-        scanf("%d", &input_type);
-        /////////////////////
-        if(input_type != READER_32 && input_type != 64){
-            fprintf(stderr, "wrong input type");
-            exit(2);
-        }
-        /////////////////////
+        int input_type, reader_to_call = r_64_p[WRITE];
+		
+		scanf("%d", &input_type);        
         if(input_type == READER_32){
             reader_to_call = r_32_p[WRITE];
         }
@@ -197,7 +192,7 @@ void do_reader32() {
             break;
         }
 
-        scanf("%llx %llx", &lsb, &msb);
+        scanf("%llx\n%llx", &lsb, &msb);
         poly = (msb << MSB_SHIFT) | lsb;
         write(poly_p[WRITE], &poly, sizeof(poly));
     }
