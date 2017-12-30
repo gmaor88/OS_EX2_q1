@@ -97,6 +97,12 @@ void do_parent(){
     while (TRUE)
     {
         scanf("%d", &input_type);
+        /////////////////////
+        if(input_type != READER_32 && input_type != 64){
+            fprintf(stderr, "wrong input type");
+            exit(2);
+        }
+        /////////////////////
         if(input_type == READER_32){
             reader_to_call = r_32_p[WRITE];
         }
